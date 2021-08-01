@@ -1,0 +1,2 @@
+extensions:
+	shopAddress: Baraja\Shop\Address\ShopAddressExtension
