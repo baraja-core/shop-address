@@ -31,8 +31,8 @@ final class DefaultMapyCzGeocoder implements GeocoderAdapter
 
 	private function downloadApiResponse(Address $address): string
 	{
-		return file_get_contents(
-			'https://api4.mapy.cz/geocode?query=' . rawurlencode($address->getFullString())
+		return (string) file_get_contents(
+			'https://api4.mapy.cz/geocode?query=' . rawurlencode($address->getFullString()),
 		);
 	}
 }
