@@ -1,6 +1,6 @@
 {
 	"name": "baraja-core/shop-address",
-	"description": "This is a template package.",
+	"description": "Simple real address storage and coordinates geocoder.",
 	"homepage": "https://github.com/baraja-core/shop-address",
 	"authors": [
 		{
