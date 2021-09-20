@@ -7,13 +7,14 @@ namespace Baraja\Shop\Address\Entity;
 
 use Baraja\Country\Entity\Country;
 use Baraja\Doctrine\Identifier\IdentifierUnsigned;
+use Baraja\Geocoder\Coordinates;
 use Baraja\Shop\Customer\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Strings;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'shop__address')]
-class Address implements \Stringable
+class Address implements \Stringable, \Baraja\Geocoder\Address
 {
 	use IdentifierUnsigned;
 
@@ -85,7 +86,9 @@ class Address implements \Stringable
 			throw new \InvalidArgumentException('Invalid data.');
 		}
 
-		$address = new self($data['country'], $data['firstName'], $data['lastName'], $data['street'], $data['city'], $data['zip']);
+		$address = new self(
+			$data['country'], $data['firstName'], $data['lastName'], $data['street'], $data['city'], $data['zip']
+		);
 		if (isset($data['companyName'])) {
 			$address->setCompanyName($data['companyName']);
 		}

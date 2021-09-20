@@ -10,6 +10,7 @@
 	],
 	"require": {
 		"php": "^8.0",
+		"baraja-core/geocoder": "^1.0",
 		"baraja-core/country": "^1.0",
 		"baraja-core/shop-customer": "^1.0"
 	},

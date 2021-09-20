@@ -14,8 +14,5 @@ final class ShopAddressExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		OrmAnnotationsExtension::addAnnotationPathToManager($builder, 'Baraja\Shop\Address\Entity', __DIR__ . '/Entity');
-
-		$builder->addDefinition($this->prefix('geocoder'))
-			->setFactory(Geocoder::class);
 	}
 }
