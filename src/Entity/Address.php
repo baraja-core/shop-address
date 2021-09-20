@@ -87,7 +87,12 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 		}
 
 		$address = new self(
-			$data['country'], $data['firstName'], $data['lastName'], $data['street'], $data['city'], $data['zip']
+			$data['country'],
+			$data['firstName'],
+			$data['lastName'],
+			$data['street'],
+			$data['city'],
+			$data['zip']
 		);
 		if (isset($data['companyName'])) {
 			$address->setCompanyName($data['companyName']);
