@@ -6,17 +6,18 @@ namespace Baraja\Shop\Address\Entity;
 
 
 use Baraja\Country\Entity\Country;
-use Baraja\Doctrine\Identifier\IdentifierUnsigned;
 use Baraja\Geocoder\Coordinates;
 use Baraja\Shop\Customer\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
-use Nette\Utils\Strings;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'shop__address')]
 class Address implements \Stringable, \Baraja\Geocoder\Address
 {
-	use IdentifierUnsigned;
+	#[ORM\Id]
+	#[ORM\Column(type: 'integer', unique: true, options: ['unsigned' => true])]
+	#[ORM\GeneratedValue]
+	protected int $id;
 
 	#[ORM\Column(type: 'string', length: 32)]
 	private string $firstName;
@@ -77,15 +78,28 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	}
 
 
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+
 	/**
-	 * @param mixed[] $data
+	 * @param array{
+	 *    country: Country,
+	 *    firstName: string,
+	 *    lastName: string,
+	 *    street: string,
+	 *    city: string,
+	 *    zip: string|int,
+	 *    companyName?: string|null,
+	 *    ic?: string|null,
+	 *    dic?: string|null
+	 * } $data
 	 */
 	public static function hydrateData(array $data): self
 	{
-		if (isset($data['country'], $data['firstName'], $data['lastName'], $data['street'], $data['city'], $data['zip']) === false) {
-			throw new \InvalidArgumentException('Invalid data.');
-		}
-
+		assert(isset($data['country'], $data['firstName'], $data['lastName'], $data['street'], $data['city'], $data['zip']));
 		$address = new self(
 			$data['country'],
 			$data['firstName'],
@@ -143,7 +157,10 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 
 	public function setFirstName(string $firstName): void
 	{
-		$this->firstName = Strings::firstUpper(trim($firstName));
+		$firstName = trim($firstName);
+		$prefix = mb_substr($firstName, 0, 1, 'UTF-8');
+		$suffix = mb_substr($firstName, 1, null, 'UTF-8');
+		$this->firstName = mb_strtoupper($prefix, 'UTF-8') . $suffix;
 	}
 
 
@@ -155,7 +172,10 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 
 	public function setLastName(string $lastName): void
 	{
-		$this->lastName = Strings::firstUpper(trim($lastName));
+		$lastName = trim($lastName);
+		$prefix = mb_substr($lastName, 0, 1, 'UTF-8');
+		$suffix = mb_substr($lastName, 1, null, 'UTF-8');
+		$this->lastName = mb_strtoupper($prefix, 'UTF-8') . $suffix;
 	}
 
 
@@ -209,7 +229,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 		foreach (str_split($street) as $char) {
 			if ($char === '.') {
 				$firstUpper = false;
-			} elseif ($firstUpper === false && preg_match('/[a-zA-Z]/', $char)) {
+			} elseif ($firstUpper === false && preg_match('/[a-zA-Z]/', $char) === 1) {
 				$char = mb_strtoupper($char, 'UTF-8');
 				$firstUpper = true;
 			}
@@ -253,9 +273,10 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	public function setCountry(Country $country): void
 	{
 		if ($country->isActive() === false) {
-			throw new \InvalidArgumentException(
-				'Country "' . $country->getIsoCode() . '" can not be used, because it is not active.',
-			);
+			throw new \InvalidArgumentException(sprintf(
+				'Country "%s" can not be used, because it must be active.',
+				$country->getIsoCode(),
+			));
 		}
 		$this->country = $country;
 	}
