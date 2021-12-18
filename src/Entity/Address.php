@@ -130,7 +130,10 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 
 	public function getFullString(): string
 	{
-		return $this->getName() . "\n"
+		$companyName = $this->getCompanyName();
+
+		return ($companyName !== null ? $companyName . "\n" : '')
+			. $this->getPersonName() . "\n"
 			. $this->getStreet() . "\n"
 			. $this->getCity() . ' ' . $this->getZip() . "\n"
 			. $this->getCountry()->getName();
