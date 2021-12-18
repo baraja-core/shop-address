@@ -99,7 +99,6 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	 */
 	public static function hydrateData(array $data): self
 	{
-		assert(isset($data['country'], $data['firstName'], $data['lastName'], $data['street'], $data['city'], $data['zip']));
 		$address = new self(
 			$data['country'],
 			$data['firstName'],
