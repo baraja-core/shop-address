@@ -106,7 +106,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 			$data['lastName'],
 			$data['street'],
 			$data['city'],
-			$data['zip']
+			$data['zip'],
 		);
 		if (isset($data['companyName'])) {
 			$address->setCompanyName($data['companyName']);
