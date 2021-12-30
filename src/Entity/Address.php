@@ -49,7 +49,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	#[ORM\ManyToOne(targetEntity: Customer::class)]
 	private ?Customer $customer = null;
 
-	#[ORM\Column(type: 'boolean')]
+	#[ORM\Column(name: '`default`', type: 'boolean')]
 	private bool $default = false;
 
 	private ?Coordinates $coordinates = null;
