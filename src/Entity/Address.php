@@ -6,13 +6,17 @@ namespace Baraja\Shop\Address\Entity;
 
 
 use Baraja\Country\Entity\Country;
+use Baraja\EcommerceStandard\DTO\AddressInterface;
+use Baraja\EcommerceStandard\DTO\CoordinatesInterface;
+use Baraja\EcommerceStandard\DTO\CountryInterface;
+use Baraja\EcommerceStandard\DTO\CustomerInterface;
 use Baraja\Geocoder\Coordinates;
 use Baraja\Shop\Customer\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'shop__address')]
-class Address implements \Stringable, \Baraja\Geocoder\Address
+class Address implements AddressInterface
 {
 	#[ORM\Id]
 	#[ORM\Column(type: 'integer', unique: true, options: ['unsigned' => true])]
@@ -52,7 +56,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	#[ORM\Column(name: '`default`', type: 'boolean')]
 	private bool $default = false;
 
-	private ?Coordinates $coordinates = null;
+	private ?CoordinatesInterface $coordinates = null;
 
 	#[ORM\Column(type: 'float', nullable: true)]
 	private ?float $latitude = null;
@@ -266,7 +270,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	}
 
 
-	public function getCountry(): Country
+	public function getCountry(): CountryInterface
 	{
 		return $this->country;
 	}
@@ -284,7 +288,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	}
 
 
-	public function getCustomer(): ?Customer
+	public function getCustomer(): ?CustomerInterface
 	{
 		return $this->customer;
 	}
@@ -308,7 +312,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	}
 
 
-	public function getCoordinates(): ?Coordinates
+	public function getCoordinates(): ?CoordinatesInterface
 	{
 		if ($this->latitude !== null && $this->longitude !== null) {
 			$this->coordinates = new Coordinates($this->latitude, $this->longitude);
@@ -318,7 +322,7 @@ class Address implements \Stringable, \Baraja\Geocoder\Address
 	}
 
 
-	public function setCoordinates(?Coordinates $coordinates): void
+	public function setCoordinates(?CoordinatesInterface $coordinates): void
 	{
 		$this->coordinates = $coordinates;
 		if ($coordinates !== null) {

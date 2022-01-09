@@ -10,7 +10,8 @@
 	],
 	"require": {
 		"php": "^8.0",
-		"baraja-core/geocoder": "^1.0",
+		"baraja-core/ecommerce-standard": "^0.0",
+		"baraja-core/geocoder": "^1.1",
 		"baraja-core/country": "^1.0",
 		"baraja-core/shop-customer": "^1.0"
 	},
@@ -19,6 +20,9 @@
 		"phpstan/phpstan-nette": "^1.0",
 		"spaze/phpstan-disallowed-calls": "^2.0",
 		"roave/security-advisories": "dev-master"
+	},
+	"conflict": {
+		"baraja-core/country": "<1.0.4"
 	},
 	"autoload": {
 		"classmap": [
